@@ -4,7 +4,8 @@ const API_BASE_URL = "https://fakestoreapi.com";
 
 /**
  * 全商品を取得する
- * fetch APIにno-ca
+ * fetch APIにno-cacheオプションを指定して、常に最新データを取得する
+ * キャッシュを有効にすると、ci/cdがなぜか通らないので、no-cacheにしている
  */
 export async function getProducts(): Promise<Product[]> {
   const response = await fetch(`${API_BASE_URL}/products`, {
