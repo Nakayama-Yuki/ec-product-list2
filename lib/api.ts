@@ -4,10 +4,11 @@ const API_BASE_URL = "https://fakestoreapi.com";
 
 /**
  * 全商品を取得する
+ * fetch APIにno-ca
  */
 export async function getProducts(): Promise<Product[]> {
   const response = await fetch(`${API_BASE_URL}/products`, {
-    next: { revalidate: 3600 }, // 1時間キャッシュ
+    cache: "no-store",
   });
 
   if (!response.ok) {
