@@ -49,9 +49,13 @@ jobs:
       # ステップ７：プロジェクトのビルド
       - name: build project
         run: pnpm run build
-      # ステップ８：Playwrightテストの実行
+      # ステップ８：Playwrightテストの実行（開発サーバーを起動）
       - name: Run Playwright tests
         run: pnpm exec playwright test
+        env:
+          # 本番ビルドをテスト対象にしたい場合は、以下を確認してください
+          # CI 環境を明示的に設定
+          CI: true
       # ステップ９：Playwrightレポートのアップロード
       - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
