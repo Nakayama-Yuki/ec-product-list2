@@ -1,3 +1,4 @@
+// 取得した製品データの１つをカード形式で表示するコンポーネント
 "use client";
 
 import Image from "next/image";
@@ -9,7 +10,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  // USD価格をJPY価格に変換
   const priceInJPY = Math.round(product.price * USD_TO_JPY_RATE);
+  // 説明文が長すぎる場合は100文字で切り詰めて"..."を付ける
   const truncatedDescription =
     product.description.length > 100 ?
       product.description.slice(0, 100) + "..."
