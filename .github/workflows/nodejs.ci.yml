@@ -43,19 +43,19 @@ jobs:
           # ソースファイルが変わってもpnpm-lock.yamlが同じならキャッシュを再利用
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
-      # ステップ６：Playwrightブラウザのインストール
-      # - name: Install Playwright Browsers
-      # run: pnpm exec playwright install --with-deps
+      # ステップ6：Playwrightブラウザのインストール
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
       # ステップ７：プロジェクトのビルド
       - name: build project
         run: pnpm run build
       # ステップ８：Playwrightテストの実行
-      # - name: Run Playwright tests
-      # run: pnpm exec playwright test
+      - name: Run Playwright tests
+        run: pnpm exec playwright test
       # ステップ９：Playwrightレポートのアップロード
-      # - uses: actions/upload-artifact@v6
-      #   if: ${{ !cancelled() }}
-      #   with:
-      #     name: playwright-report
-      #     path: playwright-report/
-      #     retention-days: 30
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
