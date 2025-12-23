@@ -1,5 +1,5 @@
 import { getProducts } from "@/lib/api";
-import ProductCard from "@/components/ProductCard";
+import ProductListWithFilter from "@/components/ProductListWithFilter";
 import { Suspense } from "react";
 
 export default async function Home() {
@@ -15,12 +15,9 @@ export default async function Home() {
 
 async function ProductList() {
   const products = await getProducts();
+  const categories = Array.from(
+    new Set(products.map((p) => p.category)),
+  ).sort();
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
+  return <ProductListWithFilter products={products} categories={categories} />;
 }
