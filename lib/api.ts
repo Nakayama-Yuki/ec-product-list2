@@ -7,8 +7,6 @@ const API_BASE_URL = "https://fakestoreapi.com";
 /**
  * fakestoreapi.com から製品データの一覧を取得する関数
  * fetch APIにno-cacheオプションを指定して、常に最新データを取得する
- * app/page.tsx で動的ルート化（export const dynamic = "force-dynamic"）しているため、
- * このリクエストは毎回ページ生成時に実行される。
  */
 export async function getProducts(): Promise<Product[]> {
   try {
