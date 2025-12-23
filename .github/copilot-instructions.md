@@ -25,12 +25,20 @@
 ```
 FakeStore API (https://fakestoreapi.com/products)
   ↓
-lib/api.ts: getProducts() [サーバー側フェッチ + 1時間キャッシュ]
+lib/api.ts: getProducts() [サーバー側フェッチ + no-store キャッシュ]
   ↓
-app/page.tsx: Home [Server Component - グリッド表示]
+app/page.tsx: Home [Server Component - Suspense境界でラップ]
   ↓
-components/ProductCard.tsx [Client Component - インタラクティブ UI]
+components/ProductListWithFilter.tsx [Client Component - カテゴリフィルタ + 状態管理]
+  ↓
+components/ProductCard.tsx [Client Component - 商品カード表示]
 ```
+
+**重要な設計判断：**
+
+- **Cache Strategy:** `cache: 'no-store'` を使用してキャッシュを無効化（常に最新データを取得）
+- **Component Split:** フィルタリング機能は ProductListWithFilter（Client Component）で管理し、商品一覧はサーバー側で取得してpropsとして渡す
+- **Suspense Usage:** app/page.tsx で Suspense を使用してローディング状態を管理（明示的なローディングコンポーネントは未実装）
 
 ### 型システム
 
@@ -59,14 +67,16 @@ components/ProductCard.tsx [Client Component - インタラクティブ UI]
 
 ## 主要ファイルと責務
 
-| ファイル | 役割 | 補足 |
-| --- | --- | --- |
-| [app/page.tsx](app/page.tsx) | ホームページ（Server Component） | 商品を取得し、レスポンシブグリッド表示（grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4） |
-| [components/ProductCard.tsx](components/ProductCard.tsx) | 商品カード（Client Component） | 画像、タイトル、円換算価格、カテゴリ、省略説明、評価を表示 |
-| [lib/api.ts](lib/api.ts) | API クライアント | `getProducts()` を1時間のキャッシュで提供；フェッチ失敗時は例外発生 |
-| [types/product.ts](types/product.ts) | 型定義 | FakeStore API レスポンスに対応：id, title, price, description, category, image, rating.{rate, count} |
-| [lib/constants.ts](lib/constants.ts) | 設定ファイル | USD_TO_JPY_RATE（現在 150） |
-| [next.config.ts](next.config.ts) | Next.js 設定 | fakestoreapi.com からの画像最適化を許可 |
+| ファイル                                                                         | 役割                             | 補足                                                                                                 |
+| -------------------------------------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [app/page.tsx](app/page.tsx)                                                     | ホームページ（Server Component） | Suspenseでラップした ProductList を表示；カテゴリ一覧を抽出してpropsとして渡す                       |
+| [components/ProductListWithFilter.tsx](components/ProductListWithFilter.tsx)     | フィルタ機能（Client Component） | useState でカテゴリフィルタを管理；aria-pressed でアクセシビリティ対応                               |
+| [components/ProductCard.tsx](components/ProductCard.tsx)                         | 商品カード（Client Component）   | 画像、タイトル、円換算価格、カテゴリ、省略説明、評価を表示                                           |
+| [lib/api.ts](lib/api.ts)                                                         | API クライアント                 | `getProducts()` を提供；エラーハンドリング（TypeError, SyntaxError）を実装                           |
+| [types/product.ts](types/product.ts)                                             | 型定義                           | FakeStore API レスポンスに対応：id, title, price, description, category, image, rating.{rate, count} |
+| [lib/constants.ts](lib/constants.ts)                                             | 設定ファイル                     | USD_TO_JPY_RATE（現在 150）                                                                          |
+| [next.config.ts](next.config.ts)                                                 | Next.js 設定                     | fakestoreapi.com からの画像最適化を許可                                                              |
+| [tests/product-list-with-filter.spec.ts](tests/product-list-with-filter.spec.ts) | E2E テスト                       | カテゴリフィルタの動作を検証（Playwright）                                                           |
 
 ---
 
@@ -88,8 +98,20 @@ pnpm build && pnpm start
 ### テスト実行
 
 ```bash
-# Playwright E2E テスト（tests/ ディレクトリに配置時）
+# Playwright E2E テスト実行
 npx playwright test
+
+# UI モードでテストを実行（推奨：ビジュアルデバッグに便利）
+pnpm test:ui
+
+# ヘッドレスモードを無効化して実行（ブラウザを表示）
+pnpm test:headed
+
+# デバッグモード（ステップ実行可能）
+pnpm test:debug
+
+# テストレポートを表示
+pnpm test:report
 ```
 
 ### リント
@@ -139,11 +161,11 @@ const truncatedDescription =
 
 ## 今後の開発検討事項
 
-- **エラーハンドリング：** `.github/instructions/nextjs.instructions.md` に記載の通り、エラーバウンダリはまだ未実装（フェーズ2に延期）
+- **エラーハンドリング：** `.github/instructions/nextjs.instructions.md` に記載の通り、エラーバウンダリはまだ未実装
 - **ローディング状態：** API 応答が高速なため、意図的に省略；必要に応じて後で Suspense 境界を使用
-- **カテゴリフィルタ：** FakeStore API が `/products/categories` と `/products/category/{category}` をサポート―フェーズ2 でフィルタ UI を計画
+- **カテゴリフィルタ：** ✅ 実装済み（ProductListWithFilter で useState を使用したクライアント側フィルタリング）
 - **検索機能：** タイトル・説明文のクライアント側検索の追加を検討
-- **キャッシュ無効化：** `getProducts()` の再検証時間（1時間）はコンテンツの更新頻度に応じて調整可能
+- **キャッシュ戦略：** 現在は `cache: 'no-store'` で常に最新データを取得；パフォーマンス改善が必要な場合は再検証時間の設定を検討
 
 ---
 
