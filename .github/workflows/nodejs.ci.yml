@@ -51,7 +51,7 @@ jobs:
       # テスト工程は一時的に無効化
       # ci/cdでのテストがなぜか失敗する問題が発生しているためです
       # テストの問題が解決したら以下のコメントを外して有効化してください
-      # - name: Install Playwright browsers
-      #   run: pnpm exec playwright install --with-deps
-      # - name: Run Playwright tests
-      #   run: pnpm test
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright tests
+        run: pnpm test
