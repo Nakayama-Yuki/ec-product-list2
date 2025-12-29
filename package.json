@@ -15,9 +15,9 @@
     "test:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "next": "16.1.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "next": "^16.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
@@ -26,7 +26,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
-    "eslint-config-next": "16.1.0",
+    "eslint-config-next": "^16.1.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }
