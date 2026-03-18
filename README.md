@@ -137,7 +137,7 @@ export const USD_TO_JPY_RATE = 150;
 - **為替レートは lib/constants.ts から参照**（ハードコード禁止）
 - **コミット前に `pnpm lint` を実行**
 
-詳細は [.github/instructions/](./github/instructions/) を参照してください。
+詳細な開発ルールは `.github/copilot-instructions.md` を参照してください。
 
 ## 🔮 今後の拡張予定
 

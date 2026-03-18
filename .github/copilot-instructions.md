@@ -1,6 +1,6 @@
 # Copilot Instructions - EC Product List
 
-このドキュメントは、AI エージェントが ec-product-list コードベースを保守・拡張する際のガイドです。フレームワーク固有のガイドラインについては `.github/instructions/` を参照してください（Next.js、TypeScript、React、Playwright）。
+このドキュメントは、AI エージェントが ec-product-list コードベースを保守・拡張する際の、プロジェクト固有ガイドです。
 
 ## プロジェクト概要
 
@@ -161,7 +161,7 @@ const truncatedDescription =
 
 ## 今後の開発検討事項
 
-- **エラーハンドリング：** `.github/instructions/nextjs.instructions.md` に記載の通り、エラーバウンダリはまだ未実装
+- **エラーハンドリング：** エラーバウンダリはまだ未実装
 - **ローディング状態：** API 応答が高速なため、意図的に省略；必要に応じて後で Suspense 境界を使用
 - **カテゴリフィルタ：** ✅ 実装済み（ProductListWithFilter で useState を使用したクライアント側フィルタリング）
 - **検索機能：** タイトル・説明文のクライアント側検索の追加を検討
@@ -177,12 +177,3 @@ const truncatedDescription =
 4. **remotePatterns 設定の漏れ禁止** → 新しい画像ホストを追加する場合は `next.config.ts` を更新
 5. **型インポート漏れ禁止** → 型のみのインポートには `import type { Product }` を使用
 6. **ESLint 警告の無視禁止** → コミット前に `pnpm lint` を実行
-
----
-
-## See Also
-
-- [.github/instructions/nextjs.instructions.md](.github/instructions/nextjs.instructions.md) — Framework best practices
-- [.github/instructions/typescript.instructions.md](.github/instructions/typescript.instructions.md) — TypeScript 5.x conventions
-- [.github/instructions/reactjs.instructions.md](.github/instructions/reactjs.instructions.md) — React 19 patterns
-- [.github/instructions/playwright.instructions.md](.github/instructions/playwright.instructions.md) — Test guidelines
