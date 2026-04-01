@@ -10,7 +10,7 @@
 
 ## 📋 機能
 
-- ✅ FakeStore API からの商品一覧取得（1時間キャッシュ）
+- ✅ FakeStore API からの商品一覧取得（`cache: "no-store"` で毎回最新データを取得）
 - ✅ レスポンシブグリッドレイアウト（モバイル対応）
 - ✅ 商品カード表示（画像、タイトル、価格、説明、評価）
 - ✅ 価格のJPY変換表示
@@ -100,12 +100,12 @@ ec-product-list/
 
 ### API フェッチ（サーバーサイド）
 
-[lib/api.ts](lib/api.ts) で FakeStore API にアクセス。レスポンスを TypeScript の型に合わせて取得。1時間のキャッシュを設定。
+[lib/api.ts](lib/api.ts) で FakeStore API にアクセス。レスポンスを TypeScript の型に合わせて取得。`cache: "no-store"` を指定して毎回最新データを取得。
 
 ```typescript
 export async function getProducts(): Promise<Product[]> {
   const response = await fetch("https://fakestoreapi.com/products", {
-    next: { revalidate: 3600 },
+    cache: "no-store",
   });
   if (!response.ok) throw new Error("製品データの取得に失敗しました");
   return response.json();

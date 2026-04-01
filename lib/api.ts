@@ -6,7 +6,7 @@ const API_BASE_URL = "https://fakestoreapi.com";
 
 /**
  * fakestoreapi.com から製品データの一覧を取得する関数
- * fetch APIにno-cacheオプションを指定して、常に最新データを取得する
+ * fetch APIに cache: "no-store" を指定して、常に最新データを取得する
  */
 export async function getProducts(): Promise<Product[]> {
   try {
