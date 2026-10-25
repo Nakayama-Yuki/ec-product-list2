@@ -19,20 +19,13 @@ jobs:
     steps:
       # ステップ１：リポジトリのコードを取得
       - uses: actions/checkout@v7
-      # ステップ２：pnpmのセットアップと依存関係のインストール
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
+      # ステップ２: pnpm、Node.js LTS、依存関係をセットアップ
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v3
         with:
-          version: 10
-          run_install: false # 依存関係のインストールは後で実行
-      # ステップ３：Node.jsのセットアップ
-      - uses: actions/setup-node@v7
-        with:
-          node-version: lts/*
-          cache: "pnpm"
-      # ステップ４：依存関係のインストール
-      - name: Install dependencies
-        run: pnpm install
+          version: 12
+          runtime: node@lts
+          cache: true
       # ステップ５：Next.jsビルドキャッシュの設定
       - name: Cache Next.js build
         uses: actions/cache@v6
