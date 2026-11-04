@@ -22,10 +22,7 @@ const eslintConfig = defineConfig([
       ...reactHooks.configs.recommended.rules,
     },
   },
-  {
-    files: ["**/*.{ts,tsx,mts,cts}"],
-    extends: [tseslint.configs.recommended],
-  },
+  ...tseslint.configs.recommended,
   globalIgnores([
     ".next/**",
     "out/**",
