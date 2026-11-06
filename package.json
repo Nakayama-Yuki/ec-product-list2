@@ -15,20 +15,20 @@
     "test:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "next": "16.4.3",
+    "next": "16.4.4",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "16.4.3",
+    "@next/eslint-plugin-next": "16.4.4",
     "@playwright/test": "^1.64.1",
-    "@tailwindcss/turbopack": "^4.3.3",
+    "@tailwindcss/turbopack": "^4.3.4",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.14.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "^4.3.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1"
   }
