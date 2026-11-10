@@ -14,7 +14,7 @@
 - ✅ レスポンシブグリッドレイアウト（モバイル対応）
 - ✅ 商品カード表示（画像、タイトル、価格、説明、評価）
 - ✅ 価格のJPY変換表示
-- ✅ TypeScript strict モード対応
+- ✅ TypeScript による型定義
 - ✅ Playwright E2E テスト対応
 
 ## 🚀 セットアップ
@@ -22,7 +22,7 @@
 ### 前提条件
 
 - Node.js 24 以上
-- pnpm（推奨）
+- pnpm
 
 ### インストール
 
@@ -53,8 +53,12 @@ pnpm start
 
 ```bash
 # Playwright E2E テスト実行
-npx playwright test
+pnpm exec playwright install --with-deps chromium
+pnpm build
+pnpm test
 ```
+
+Playwright は `pnpm start` を起動するため事前ビルドが必要です。商品データは実際の FakeStore API から取得するため、外部接続が必要です。
 
 ## 📝 リント
 
@@ -66,12 +70,13 @@ pnpm lint
 ## 📂 ディレクトリ構造
 
 ```
-ec-product-list/
+ec-product-list2/
 ├── app/                    # Next.js App Router（ページ・レイアウト）
 │   ├── layout.tsx
 │   ├── page.tsx           # ホームページ（商品一覧）
 │   └── globals.css
 ├── components/            # React コンポーネント
+│   ├── ProductListWithFilter.tsx # カテゴリフィルター
 │   └── ProductCard.tsx    # 商品カードコンポーネント
 ├── lib/                   # ユーティリティ・ API クライアント
 │   ├── api.ts            # FakeStore API 連携
@@ -79,7 +84,8 @@ ec-product-list/
 ├── types/                 # TypeScript 型定義
 │   └── product.ts        # Product インターフェース
 ├── tests/                 # Playwright テスト
-│   └── example.spec.ts
+│   ├── example.spec.ts
+│   └── product-list-with-filter.spec.ts
 ├── public/               # 静的ファイル
 ├── next.config.ts        # Next.js 設定
 ├── tsconfig.json         # TypeScript 設定
@@ -90,11 +96,11 @@ ec-product-list/
 
 | 技術         | バージョン | 用途                  |
 | ------------ | ---------- | --------------------- |
-| Next.js      | 16.1.0     | フレームワーク        |
-| React        | 19.2.3     | UI ライブラリ         |
-| TypeScript   | 5.9.3      | 言語（strict モード） |
-| Tailwind CSS | 4.1.18     | スタイリング          |
-| Playwright   | 1.57.0     | E2E テスト            |
+| Next.js      | 16 系      | フレームワーク        |
+| React        | 19 系      | UI ライブラリ         |
+| TypeScript   | package.json 参照 | 言語             |
+| Tailwind CSS | 4 系       | スタイリング          |
+| Playwright   | package.json 参照 | E2E テスト       |
 
 ## 📌 主要な実装ポイント
 
@@ -114,7 +120,7 @@ export async function getProducts(): Promise<Product[]> {
 
 ### Server Component → Client Component パターン
 
-- **[app/page.tsx](app/page.tsx)：** Server Component。API データを取得後、ProductCard に渡す
+- **[app/page.tsx](app/page.tsx)：** Server Component。Suspense 内で API データを取得し、ProductListWithFilter を経由してカードへ渡す
 - **[components/ProductCard.tsx](components/ProductCard.tsx)：** Client Component。価格変換、テキスト省略などのインタラクション処理
 
 ### 為替レート管理
@@ -131,13 +137,11 @@ export const USD_TO_JPY_RATE = 150;
 
 ## 📋 開発規約
 
-- **TypeScript strict モード必須**（`any` 型禁止）
+- **開発方針**：型を明確にし、`any` を避ける。現在の `tsconfig.json` には `strict: true` の明示設定はありません。strict の有効化は別のコード変更として検証が必要です。
 - **Client Component での API フェッチ禁止**（Server Component または Route Handler を使用）
 - **外部画像は常に Next.js Image コンポーネント使用**
 - **為替レートは lib/constants.ts から参照**（ハードコード禁止）
 - **コミット前に `pnpm lint` を実行**
-
-詳細な開発ルールは `.github/copilot-instructions.md` を参照してください。
 
 ## 🔮 今後の拡張予定
 
@@ -152,4 +156,8 @@ export const USD_TO_JPY_RATE = 150;
 
 ---
 
-**最後更新：** 2025年12月20日
+依存関係の正確な指定は [package.json](package.json)、解決結果はロックファイルを参照してください。
+
+## 開発ルール
+
+開発時の指示は [AGENTS.md](AGENTS.md) を参照してください。依存バージョンと実行可能なスクリプトは [package.json](package.json) を正とします。
