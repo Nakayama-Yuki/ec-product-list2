@@ -161,3 +161,11 @@ export const USD_TO_JPY_RATE = 150;
 ## 開発ルール
 
 開発時の指示は [AGENTS.md](AGENTS.md) を参照してください。依存バージョンと実行可能なスクリプトは [package.json](package.json) を正とします。
+
+## 型チェック
+
+```bash
+pnpm typecheck
+```
+
+`next typegen` でルート型と `next-env.d.ts` を生成し、`tsc --noEmit` で型を検証します。CI でもビルド前に同じコマンドを実行します。
