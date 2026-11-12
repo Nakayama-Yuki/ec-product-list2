@@ -26,6 +26,9 @@ jobs:
           version: 12
           runtime: node@lts
           cache: true
+
+      - name: Type check
+        run: pnpm run typecheck
       - name: Run lint
         run: pnpm lint --max-warnings=0
       # ステップ５：Next.jsビルドキャッシュの設定
