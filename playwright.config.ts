@@ -72,7 +72,9 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "pnpm start",
+    command: process.env.E2E_LIVE_API
+      ? "pnpm start"
+      : "node --import ./tests/mock-fetch.mjs node_modules/next/dist/bin/next start",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
   },
