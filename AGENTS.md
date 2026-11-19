@@ -36,7 +36,7 @@ pnpm build
 pnpm test
 ```
 
-`playwright.config.ts` は `pnpm start` を起動するため事前ビルドが必要。有効なブラウザは Chromium。カテゴリ変更は `tests/product-list-with-filter.spec.ts` を参照する。追加の UI・headed・debug・report コマンドは `package.json` を参照する。警告を無視せず、未実行の確認は理由を報告する。
+`pnpm build:e2e` で事前ビルドし、`playwright.config.ts` は本番サーバーにテスト用fetchを読み込む。有効なブラウザは Chromium。カテゴリ変更は `tests/product-list-with-filter.spec.ts` を参照する。追加の UI・headed・debug・report コマンドは `package.json` を参照する。警告を無視せず、未実行の確認は理由を報告する。
 
 ## 文書の管理
 

@@ -40,7 +40,7 @@ test.describe("Home Page - EC Product List", () => {
     await test.step("Verify product card has category text", async () => {
       // カテゴリテキストはカード内に表示される
       const category = firstCard.getByText(
-        /electronics|jewelery|men's clothing|women's clothing/i,
+        /^(electronics|jewelery|men's clothing|women's clothing)$/i,
       );
       await expect(category).toBeVisible();
     });

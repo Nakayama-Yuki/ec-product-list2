@@ -13,7 +13,10 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "test:install": "playwright install --with-deps"
+    "test:install": "playwright install --with-deps",
+    "test:e2e": "playwright test",
+    "ci:check": "pnpm typecheck && pnpm lint --max-warnings=0",
+    "build:e2e": "node --import ./tests/mock-fetch.mjs node_modules/next/dist/bin/next build"
   },
   "dependencies": {
     "next": "16.4.6",
